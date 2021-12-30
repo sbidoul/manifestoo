@@ -11,7 +11,7 @@ from .commands.list_depends import list_depends_command
 from .commands.list_external_dependencies import list_external_dependencies_command
 from .commands.tree import tree_command
 from .core_addons import get_core_addons
-from .git import get_branch_modified_addons
+from .git import get_branch_modified_addons, get_branch_new_addons
 from .odoo_series import OdooSeries, detect_from_addons_set
 from .options import MainOptions
 from .utils import ensure_odoo_series, not_implemented, print_list
@@ -52,6 +52,16 @@ def callback(
             "Select all addons modified on current branch,"
             " relative to the given branch."
         ),
+    ),
+    select_git_new: str = typer.Option(
+        None,
+        "--select-git-new",
+        "-n",
+        help=(
+            "Select all new addons modified on current branch,"
+            " relative to the given branch."
+        ),
+        show_default=False,
     ),
     select_include: Optional[str] = typer.Option(
         None,
@@ -183,6 +193,9 @@ def callback(
             select_git_modified, main_options.addons_path
         )
         main_options.addons_selection.add_addon_names(",".join(modified_addons))
+    if select_git_new:
+        new_addons = get_branch_new_addons(select_git_new, main_options.addons_path)
+        main_options.addons_selection.add_addon_names(",".join(new_addons))
     if select_include:
         main_options.addons_selection.add_addon_names(select_include)
     if select_exclude:

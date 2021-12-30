@@ -35,7 +35,7 @@ pip install --user manifestoo
 Manifestoo is a command line tool that provides the following features:
 
 * listing addons,
-* listing modified addons on a feature branch,
+* listing modified or new addons on a feature branch,
 * listing direct and transitive dependencies of selected addons,
 * listing core Odoo CE and EE addons,
 * listing external dependencies,
@@ -72,6 +72,11 @@ It is possible to select modified addons compared to a target branch `target`.
 $ manifestoo --addons-path /tmp/myaddons --select-git-modified target list
 a
 b
+c
+```
+To instead get only newly added addons, use (shortcut `-n`):
+```console
+$ manifestoo --addons-path /tmp/myaddons --select-git-new target list
 c
 ```
 
